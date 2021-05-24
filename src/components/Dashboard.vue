@@ -8,7 +8,7 @@
       dark
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>Səs Azərbaycan</v-toolbar-title>
+      <v-toolbar-title>Top Səndədir - CMS</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn class="mx-2" outlined dark small color="light" @click="logOut" :loading="loading">
         <v-icon  dark>mdi-power</v-icon>
@@ -30,23 +30,55 @@
                   alt="John"
                 >
           </v-list-item-avatar>
-          <v-list-item-title >VOICE</v-list-item-title>
+          <v-list-item-title >Top Səndədir - CMS</v-list-item-title>
         </v-list-item>
         <v-divider></v-divider>
         <v-list-item link to="/">
           <v-list-item-action>
-            <v-icon large>list</v-icon>
+            <v-icon large>widgets</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Səsvermə tarixçəsi</v-list-item-title>
+            <v-list-item-title>Oyunlar</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item link to="/team">
+          <v-list-item-action>
+            <v-icon large>mdi-soccer</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Komandalar</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item link to="/numbers">
           <v-list-item-action>
-            <v-icon large>mdi-domain</v-icon>
+            <v-icon large>mdi-crystal-ball</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Nömrə tarixçəsi</v-list-item-title>
+            <v-list-item-title>Qaliblər</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item link to="/numbers">
+          <v-list-item-action>
+            <v-icon large>event</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Statistika</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item link to="/numbers">
+          <v-list-item-action>
+            <v-icon large>mdi-handball</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>İstifadəçi Statistikası</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item link to="/account">
+          <v-list-item-action>
+            <v-icon large>mdi-account</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Accounts</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -83,18 +115,14 @@
       logOut(){
         this.loading = true
 
-        this.$store.dispatch('updateLogin',{user:'', value1:'',value2:'', expires:-1, token:''})
+        this.$store.dispatch('updateLogin',{token:'', expires:-1})
 
         this.loading = false
         location.href='/login'
-        //  this.$router.push('/login')
       }
     },
     created(){
-      var usr = this.$store.getters.getUser
-      if(usr){
-        this.username = usr.username
-      }
+
     },
     beforeCreate() {
       if(!this.$store.getters.is_login){

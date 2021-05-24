@@ -66,6 +66,12 @@
       username : '',
       password : '',
       loading:false,
+      config : {
+        headers: {
+        'Content-Type':'application/json'
+        
+       }
+      },
       rules : {
         username: [
           val => val != '' || 'Doldurun!'
@@ -81,21 +87,25 @@
       signIn(){
         if(this.formIsValid){
           this.loading = true
-          axios.post(this.$store.getters.getUrl+'/user/signin',{username:this.username,password:this.password})
+          axios.post(this.$store.getters.getUrl+'/loginadmin/signin',{Email:this.username,Password:this.password})
           .then(response => {
+            console.log(response)
             if(response.data.success){
               this.$toast.success('Success')
             
-              this.$store.dispatch('updateLogin',{user:response.data.value.user, value1:JSON.stringify(response.data.value.user),value2:'Bearer '+response.data.value.token, expires:1, token:'Bearer '+response.data.value.token})
+              this.$store.dispatch('updateLogin',{token:'Bearer '+response.data.value.token,expires:1})
 
               this.loading = false
               location.href='/'
-              // this.$router.push('/')
             }
             else {
               this.$toast.error('İstifadəçi adı və ya parol səhvdir!')
               this.loading = false
             }
+          })
+          .catch(() => {
+            this.$toast.error('Sistem xətası!')
+            this.$store.dispatch('refresh')
           })
         }
         else{

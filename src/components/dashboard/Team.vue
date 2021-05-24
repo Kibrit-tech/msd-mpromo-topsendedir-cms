@@ -9,7 +9,7 @@
           >
             <v-card>
               <v-card-title>
-                <span class="headline">Yeni Mərhələ</span>
+                <span class="headline">Yeni Komanda</span>
               </v-card-title>
               <v-card-text>
                 <v-container>
@@ -28,18 +28,13 @@
                     <v-col
                       cols="12"
                       sm="6"
-                      md="4"
+                      md="8"
                     >
-                    <v-datetime-picker label="Başlama vaxtı"  v-model="startDate" clearText="Təmizlə"> 
-                    </v-datetime-picker>
-                    </v-col>
-                    <v-col
-                      cols="12"
-                      sm="6"
-                      md="4"
-                    >
-                     <v-datetime-picker label="Bitmə vaxtı" v-model="endDate" clearText="Təmizlə"> 
-                    </v-datetime-picker>
+                    <v-file-input
+                        accept="image/*"
+                        @change="ImageUpload($event)"
+                        label="Team logo"
+                    ></v-file-input>
                     </v-col>
                   </v-row>
                 </v-container>
@@ -84,25 +79,20 @@
                     >
                       <v-text-field
                         label="Adı"
-                        v-model="uitem.name"
+                        v-model="uitem.teamName"
                         :rules="rules.name"
                       ></v-text-field>
                     </v-col>
                     <v-col
                       cols="12"
                       sm="6"
-                      md="4"
+                      md="8"
                     >
-                    <v-datetime-picker label="Başlama vaxtı"  v-model="uitem.beginDate"  clearText="Təmizlə"> 
-                    </v-datetime-picker>
-                    </v-col>
-                    <v-col
-                      cols="12"
-                      sm="6"
-                      md="4"
-                    >
-                     <v-datetime-picker label="Bitmə vaxtı" v-model="uitem.endDate" clearText="Təmizlə"> 
-                    </v-datetime-picker>
+                    <v-file-input
+                        accept="image/*"
+                        @change="ImageUpload2($event)"
+                        label="Team logo"
+                    ></v-file-input>
                     </v-col>
                   </v-row>
                 </v-container>
@@ -136,7 +126,7 @@
           color="indigo"
           @click="step"
         >
-          Mərhələ əlavə et  
+          Komanda əlavə et  
         </v-btn>
       </div>
         </v-row>
@@ -151,10 +141,7 @@
                 Ad
               </th>
               <th class="text-center">
-                Başlama vaxtı
-              </th>
-              <th class="text-center">
-                Bitmə vaxtı
+                Logo
               </th>
               <th>
               </th>
@@ -167,18 +154,16 @@
               class="text-center"
             >
               <td>{{ index+1 }}</td>
-              <td>{{ item.name }}</td>
-              <td>{{ format_date(item.beginDate) }}</td>
-              <td>{{ format_date(item.endDate) }}</td>
+              <td>{{ item.teamName }}</td>
+              <td >
+                <v-img
+                  style="margin:auto"
+                  max-height="150"
+                  max-width="150"
+                  :src="item.imageName"
+                ></v-img>
+              </td>
               <td>
-                <v-btn
-                class="ma-2"
-                outlined
-                color="indigo"
-                @click="tab(item)"
-                >
-                  <v-icon>mdi-format-list-bulleted-square</v-icon>
-                </v-btn>
                 <v-btn
                 class="ma-2"
                 outlined
@@ -187,48 +172,15 @@
                 >
                   <v-icon>mdi-pencil</v-icon>
                 </v-btn>
+                <v-btn
+                class="ma-2"
+                outlined
+                color="indigo"
+                @click="delette(item)"
+                >
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
               </td>
-            </tr>
-          </tbody>
-        </template>
-      </v-simple-table>
-      <div class="text-center" v-if="leng>1">
-        <v-pagination
-        v-model="reguest.Pager.CurrentPage"
-        :length="leng"
-        @input="onPageChange"
-        ></v-pagination>
-      </div>
-      <br>
-      <br>
-      <hr>
-      <br>
-      <br>
-      <h3>{{tableItem.name}}</h3>
-      <v-simple-table style="width:100%">
-        <template v-slot:default>
-          <thead>
-            <tr>
-              <th class="text-center">
-                Istifadəçi nömrəsi
-              </th>
-              <th class="text-center">
-                Səs sayı
-              </th>
-              <th class="text-center">
-                Faiz
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="subitem in subitems"
-              :key="subitem.userId"
-              class="text-center"
-            >
-              <td>{{ subitem.user.userNumber }}</td>
-              <td>{{ subitem.count }}</td>
-              <td>{{ subitem.total }}</td>
             </tr>
           </tbody>
         </template>
@@ -239,6 +191,7 @@
 <script>
 import axios from 'axios'
 import moment from "moment"
+import Swal from "sweetalert2"
   export default {
     data: () => ({
       rules:{
@@ -254,86 +207,100 @@ import moment from "moment"
               Authorization: ''
           }
       },
-      reguest: {
-        "Pager":{
-          "CurrentPage":1,
-          "PageSize":10
-        }
-      },
       name:'',
-      startDate:'',
-      endDate:'',
-      uitem : {
-
-      },
-      subitems: [],
-      tableItem:{},
-      totalCount:0,
+      image:'',
+      base64img:'',
+      uitem:{},
       items : []
     }),
     methods:{
-      onPageChange(){
-        axios.post(this.$store.getters.getUrl+'/VoiceStage/GetListByFilterPaged',this.reguest,this.config).then(response=>{
-          this.items= response.data.value.list
-          this.totalCount = response.data.value.totalCount
-        }).catch(() => {
-          
-          this.$store.dispatch('updateLogin',{user:'', value1:'',value2:'', expires:-1, token:''})
-          location.href='/login'
-        })
+      ImageUpload(e){
+          var fileReader = new FileReader();
+          fileReader.onload = (fileLoadedEvent) => {
+            var srcData = fileLoadedEvent.target.result;
+            this.base64img = srcData
+
+          }
+          fileReader.readAsDataURL(e)
+      },
+      ImageUpload2(e){
+          var fileReader = new FileReader();
+          fileReader.onload = (fileLoadedEvent) => {
+            var srcData = fileLoadedEvent.target.result;
+            this.uitem.ImageName = srcData
+
+          }
+          fileReader.readAsDataURL(e)
       },
       add(){
         if(this.formIsValid){
 
-          axios.post(this.$store.getters.getUrl+'/voiceStage/add',{ name:this.name, endDate:this.format_api_date(this.endDate),beginDate:this.format_api_date(this.startDate) },this.config).then(response=>{
+          axios.post(this.$store.getters.getUrl+'/adminteam/create',{ TeamName:this.name, ImageName: this.base64img },this.config).then(response=>{
             if(response.data.success){
               this.$toast.success('Uğurla əlavə edildi!')
-              this.onPageChange()
+              this.refresh()
               this.form = false
             }
             else{
               this.$toast.error('Bir xəta baş verdiş Bir daha sınayın!')
+              this.form = false
             }
           }).catch(() => {
             
-            this.$store.dispatch('updateLogin',{user:'', value1:'',value2:'', expires:-1, token:''})
-            location.href='/login'
+            this.$store.dispatch('refresh')
           })
         }
         else{
           this.$toast.error('Xanalar düzgün doldurulmayib. Bir daha xanaları yoxlayın!')
         }
 
+
       },
-      update(item){
-          this.uitem = item
-          this.uitem.beginDate = this.ditepicker_format(item.beginDate)
-          this.uitem.endDate = this.ditepicker_format(item.endDate)
-          this.formupdate = true
-      },
-      tab(item){
-          this.tableItem = item
-          axios.get(this.$store.getters.getUrl+'/voiceVote/GetStageVoiceReport/'+item.id,this.config).then(response=>{
+      delette(item){
+        Swal.fire({
+        title: 'Sil',
+        text: "Əminsiniz?",
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: "İmtina",
+        confirmButtonText: 'Təsdiq'
+        }).then((result) => {
+        if (result.isConfirmed) {
+          axios.get(this.$store.getters.getUrl+'/adminteam/delete?id='+item.id,this.config).then(response=>{
             if(response.data.success){
-              this.subitems = response.data.list
+              this.$toast.success('Uğurla silindi!')
+              Swal.fire(
+              'Uğurla silindi!',
+              '',
+              'success'
+              )
+              this.refresh()
             }
             else{
               this.$toast.error('Bir xəta baş verdiş Bir daha sınayın!')
+              Swal.fire(
+                  'Xəta.',
+                  'Bir xəta baş verdiş Bir daha sınayın!',
+                  'error'
+              )
             }
           }).catch(() => {
-            
-            this.$store.dispatch('updateLogin',{user:'', value1:'',value2:'', expires:-1, token:''})
-            location.href='/login'
+            this.$store.dispatch('refresh')
           })
+        }
+        })
+      },
+      update(item){
+          this.uitem = item
+          this.formupdate = true
       },
       upd(){
         if(this.formUIsValid){
-          this.uitem.beginDate = this.format_api_date(this.uitem.beginDate)
-          this.uitem.endDate = this.format_api_date(this.uitem.endDate)
-          axios.post(this.$store.getters.getUrl+'/voiceStage/update',this.uitem,this.config).then(response=>{
+          axios.post(this.$store.getters.getUrl+'/adminteam/update',this.uitem,this.config).then(response=>{
             if(response.data.success){
               this.$toast.success('Uğurla dəyişdirildi!')
-              this.onPageChange()
+              this.refresh()
               this.formupdate = false
             }
             else{
@@ -350,14 +317,23 @@ import moment from "moment"
         }
 
       },
+      refresh(){
+        axios.get(this.$store.getters.getUrl+'/adminteam/getall',this.config).then(response=>{
+          if(response.data.success){
+            this.items= response.data.value
+          }
+        }).catch(() => {
+            this.$store.dispatch('refresh')
+        })
+      },
       ditepicker_format(d){
       return d ? moment(d).format("YYYY-MM-DD HH:mm") : '';
       },
       step(){
         this.form=true
         this.name = ''
-        this.startDate = ''
-        this.endDate = ''
+        this.base64img = ''
+        this.image = ''
       },
       format_date(k){
             return k ? moment(k).format('DD.MM.Y HH:mm') : '';
@@ -369,27 +345,14 @@ import moment from "moment"
 
     created(){
       this.config.headers.Authorization= this.$store.getters.getTokenCookie
-      // axios.post(this.$store.getters.getUrl+'/VoiceStage/GetListByFilterPaged',this.reguest,this.config).then(response=>{
-      //   this.items= response.data.value.list
-      //   this.totalCount = response.data.value.totalCount
-      // }).catch(() => {
-        
-      //   this.$store.dispatch('updateLogin',{user:'', value1:'',value2:'', expires:-1, token:''})
-      //   location.href='/login'
-      // })
+      this.refresh()
     },
     computed : {   
-      leng(){
-          return Math.ceil(this.totalCount/this.reguest.Pager.PageSize);
-      },
       formIsValid(){
         if(this.name=='')
         return false
-        if(this.startDate=='')
+        if(this.base64img=='')
         return false
-        if(this.endDate=='')
-        return false
-
         return true
 
       },

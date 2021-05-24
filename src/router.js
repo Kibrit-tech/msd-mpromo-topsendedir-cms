@@ -4,7 +4,8 @@ import Dashboard from './components/Dashboard'
 import Login from './components/Login'
 import Index from './components/dashboard/Index'
 import VueMeta from 'vue-meta'
-import Number from './components/dashboard/Number'
+import Team from './components/dashboard/Team'
+import Account from './components/dashboard/Account'
 
 Vue.use(VueMeta)
 Vue.use(VueRouter)
@@ -29,20 +30,31 @@ export const router = new VueRouter({
                     name: 'Profile', 
                     component: Index,
                     meta : {
-                        title : 'Səsvermə tarixçəsi'
+                        title : 'Dashboard'
                     },
 
 
                 },
-
                 {
-                    path: '/numbers',
-                    name: 'Numbers', 
-                    component: Number,
+                    path: '/team',
+                    name: 'Team', 
+                    component: Team,
                     meta : {
-                        title : 'Nömrə tarixçəsi'
-                    }
-                }
+                        title : 'Teams'
+                    },
+
+
+                },
+                {
+                    path: '/account',
+                    name: 'Accounts', 
+                    component: Account,
+                    meta : {
+                        title : 'Accounts'
+                    },
+
+
+                },
                 // {path: '/activity',name: 'Activity', component: activity},
             ],
         },
