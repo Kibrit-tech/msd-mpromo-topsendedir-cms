@@ -1,12 +1,16 @@
 import Vue from "vue"
 import VueRouter from "vue-router"
+import DatetimePicker from 'vuetify-datetime-picker';
 import Dashboard from './components/Dashboard'
 import Login from './components/Login'
 import Index from './components/dashboard/Index'
 import VueMeta from 'vue-meta'
 import Team from './components/dashboard/Team'
 import Account from './components/dashboard/Account'
+import Statistic from './components/dashboard/Statistic'
+import UserStatistic from './components/dashboard/UserStatistic'
 
+Vue.use(DatetimePicker)
 Vue.use(VueMeta)
 Vue.use(VueRouter)
 
@@ -51,6 +55,26 @@ export const router = new VueRouter({
                     component: Account,
                     meta : {
                         title : 'Accounts'
+                    },
+
+
+                },
+                {
+                    path: '/statistic',
+                    name: 'Statistic', 
+                    component: Statistic,
+                    meta : {
+                        title : 'Statistic'
+                    },
+
+
+                },
+                {
+                    path: '/userstatistic',
+                    name: 'UserStatistic', 
+                    component: UserStatistic,
+                    meta : {
+                        title : 'UserStatistic'
                     },
 
 

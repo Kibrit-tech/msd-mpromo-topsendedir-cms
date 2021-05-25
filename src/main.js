@@ -5,7 +5,6 @@ import { router } from './router'
 import { store } from './store'
 import VueToast from 'vue-toast-notification';
 import 'vue-toast-notification/dist/theme-sugar.css';
-import DatetimePicker from 'vuetify-datetime-picker'
 // (Optional) import 'vuetify-datetime-picker/src/stylus/main.styl'
 
  
@@ -22,4 +21,3 @@ new Vue({
 Vue.use(VueToast,{
   position:'top-left'
 });
-Vue.use(DatetimePicker)

@@ -57,7 +57,7 @@
             <v-list-item-title>Qaliblər</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link to="/numbers">
+        <v-list-item link to="/statistic">
           <v-list-item-action>
             <v-icon large>event</v-icon>
           </v-list-item-action>
@@ -65,7 +65,7 @@
             <v-list-item-title>Statistika</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link to="/numbers">
+        <v-list-item link to="/userstatistic">
           <v-list-item-action>
             <v-icon large>mdi-handball</v-icon>
           </v-list-item-action>
