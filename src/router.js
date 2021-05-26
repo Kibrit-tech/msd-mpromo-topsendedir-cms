@@ -9,6 +9,7 @@ import Team from './components/dashboard/Team'
 import Account from './components/dashboard/Account'
 import Statistic from './components/dashboard/Statistic'
 import UserStatistic from './components/dashboard/UserStatistic'
+import Winner from './components/dashboard/Winner'
 
 Vue.use(DatetimePicker)
 Vue.use(VueMeta)
@@ -75,6 +76,16 @@ export const router = new VueRouter({
                     component: UserStatistic,
                     meta : {
                         title : 'UserStatistic'
+                    },
+
+
+                },
+                {
+                    path: '/winner',
+                    name: 'Winner', 
+                    component: Winner,
+                    meta : {
+                        title : 'Winner'
                     },
 
 

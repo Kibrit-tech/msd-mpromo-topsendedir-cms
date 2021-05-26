@@ -49,7 +49,7 @@
             <v-list-item-title>Komandalar</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link to="/numbers">
+        <v-list-item link to="/winner">
           <v-list-item-action>
             <v-icon large>mdi-crystal-ball</v-icon>
           </v-list-item-action>
