@@ -308,8 +308,7 @@ import Swal from "sweetalert2"
             }
           }).catch(() => {
             
-            this.$store.dispatch('updateLogin',{user:'', value1:'',value2:'', expires:-1, token:''})
-            location.href='/login'
+            this.$store.dispatch('refresh')
           })
         }
         else{

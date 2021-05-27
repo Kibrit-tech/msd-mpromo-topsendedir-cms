@@ -34,8 +34,8 @@ export const store = new Vuex.Store({
         },
         refresh(){
           setTimeout(()=>{
-            console.log('xeta')
-            // location.href = '/'
+            this.$store.dispatch('updateLogin',{token:'', expires:-1})
+            location.href = '/'
           },2000)
         }
 
