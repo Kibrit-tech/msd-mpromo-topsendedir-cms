@@ -83,7 +83,7 @@ import moment from "moment"
         })
       },
       format_date(k){
-            return k ? moment(k).format('DD.MM.Y HH:mm') : '';
+            return k ? moment(k).format('DD.MM.Y HH:mm:ss') : '';
         },
     },
 

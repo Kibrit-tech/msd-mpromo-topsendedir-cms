@@ -435,7 +435,7 @@ import Swal from "sweetalert2"
         this.image = ''
       },
       format_date(k){
-            return k ? moment(k).format('DD.MM.Y HH:mm') : '';
+            return k ? moment(k).format('DD.MM.Y HH:mm:ss') : '';
         },
       format_api_date(k){
           return k ? moment(k).format('Y-MM-DD HH:mm:ss') : '';

@@ -210,7 +210,7 @@ import Swal from "sweetalert2"
         })
       },
       format_date(k){
-            return k ? moment(k).format('DD.MM.Y HH:mm') : '';
+            return k ? moment(k).format('DD.MM.Y HH:mm:ss') : '';
         },
       format_api_date(k){
           return k ? moment(k).format('Y-MM-DDTHH:mm:ss') : '';
