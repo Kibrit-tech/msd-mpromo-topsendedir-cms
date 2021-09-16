@@ -160,7 +160,7 @@
                   style="margin:auto"
                   max-height="150"
                   max-width="150"
-                  :src="item.imageName"
+                  :src="'http://api.vas.az/brandvas/images/'+item.imageName"
                 ></v-img>
               </td>
               <td>
