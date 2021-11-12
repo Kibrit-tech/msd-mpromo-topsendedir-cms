@@ -379,16 +379,16 @@ import Swal from "sweetalert2"
         })
       },
       update(item){
-        console.log(item)
           this.uitem.Id = item.id
           this.uitem.MatchDate = this.ditepicker_format(item.matchDate)
-          this.uitem.MatchScore = item.resultId
+          this.uitem.MatchScore = item.resultId ? parseInt(item.resultId):item.resultId
           this.uitem.Status = item.status
           this.uitem.FirstTeamId = item.firstTeamId
           this.uitem.SecondTeamId = item.secondTeamId
           this.selectbox[2].name = item.firstTeam
           this.selectbox[3].name = item.secondTeam
           this.formupdate = true
+          console.log(this.uitem)
       },
       upd(){
         if(this.formUIsValid){

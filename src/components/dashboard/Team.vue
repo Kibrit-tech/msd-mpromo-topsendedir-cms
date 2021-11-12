@@ -227,7 +227,7 @@ import Swal from "sweetalert2"
           var fileReader = new FileReader();
           fileReader.onload = (fileLoadedEvent) => {
             var srcData = fileLoadedEvent.target.result;
-            this.uitem.ImageName = srcData
+            this.uitem.TeamImageName = srcData
 
           }
           fileReader.readAsDataURL(e)
