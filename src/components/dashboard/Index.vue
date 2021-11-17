@@ -388,7 +388,6 @@ import Swal from "sweetalert2"
           this.selectbox[2].name = item.firstTeam
           this.selectbox[3].name = item.secondTeam
           this.formupdate = true
-          console.log(this.uitem)
       },
       upd(){
         if(this.formUIsValid){
