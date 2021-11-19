@@ -115,6 +115,9 @@
                 Nömrə
               </th>
               <th class="text-center">
+                Düzgün oyun sayı
+              </th>
+              <th class="text-center">
                 Tarix
               </th>
               <th>SMS yaz</th>
@@ -133,6 +136,7 @@
               ></v-checkbox>
               </td>
               <td>{{ item.number }}</td>
+              <td>{{ item.correctGuessNum }}</td>
               <td>{{ format_date(item.date) }}</td>
               <td>
               <v-btn

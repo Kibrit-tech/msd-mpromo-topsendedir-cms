@@ -125,17 +125,28 @@
                     </v-datetime-picker>
                     </v-col>
                     <v-col
-                      cols="12"
-                      sm="6"
-                      md="4"
+                        cols="12"
+                        sm="6"
+                        md="4"
                     >
-                    <v-select
-                      :items="selectbox"
-                      v-model="uitem.MatchScore"
-                      label="Nəticə"
-                      :item-text="'name'"
-                      :item-value="'value'"
-                    ></v-select>
+                        <v-select
+                            :items="scores"
+                            v-model="firstscr"
+                            label="Birinci komanda"
+                            outlined
+                        ></v-select>
+                    </v-col>
+                    <v-col
+                        cols="12"
+                        sm="6"
+                        md="4"
+                    >
+                        <v-select
+                            :items="scores"
+                            v-model="secondscr"
+                            label="Ikinci komanda"
+                            outlined
+                        ></v-select>
                     </v-col>
                     <v-col
                       cols="12"
@@ -233,7 +244,7 @@
                 Oynama vaxti
               </th>
               <th class="text-center">
-                Nəticə
+                Hesab
               </th>
               <th class="text-center">
                 Status
@@ -252,8 +263,7 @@
               <td>{{ item.firstTeam }}</td>
               <td>{{ item.secondTeam }}</td>
               <td>{{ format_date(item.matchDate) }}</td>
-              <td v-if="item.result==='0'">Heç-Heçə</td>
-              <td v-else>{{ item.result }}</td>
+              <td>{{ item.result }}</td>
               <td v-if="item.status==0">Normal</td>
               <td v-else>Təxirə Salınıb</td>
               <td>
@@ -304,11 +314,15 @@ import Swal from "sweetalert2"
       firstTeamId:'',
       secondTeamId:'',
       MatchDate:'',
+      firstscr:'',
+      secondscr:'',
+      scr:'',
       beginDate: '',
       endDate: '',
       uitem:{},
-      selectbox:[{name:'',value: null},{name:'Heç-Heçə',value:0},{name:'',value:1},{name:'',value:2}],
+      selectbox:[{name:'',value: ''},{name:'Heç-Heçə',value:0},{name:'',value:1},{name:'',value:2}],
       status:[{name:'Normal',value:0},{name:'Təxirə salınıb',value:1}],
+      scores:["0","1","2","3","4","5","6","7","7+"],
       items : [],
       clubs : []
     }),
@@ -379,19 +393,36 @@ import Swal from "sweetalert2"
         })
       },
       update(item){
+          this.firstscr = ''
+          this.secondscr = ''
+          this.scr = ''
           this.uitem.Id = item.id
           this.uitem.MatchDate = this.ditepicker_format(item.matchDate)
-          this.uitem.MatchScore = item.resultId ? parseInt(item.resultId):item.resultId
           this.uitem.Status = item.status
           this.uitem.FirstTeamId = item.firstTeamId
           this.uitem.SecondTeamId = item.secondTeamId
           this.selectbox[2].name = item.firstTeam
           this.selectbox[3].name = item.secondTeam
+          if(item.result){
+            let arr = item.result.split("-")
+            this.firstscr = arr[0]
+            this.secondscr = arr[1]
+            this.scr = this.firstscr+"-"+this.secondscr
+          }
+          else{
+            this.scr = this.firstscr+"-"+this.secondscr
+          }
           this.formupdate = true
       },
       upd(){
         if(this.formUIsValid){
-          axios.post(this.$store.getters.getUrl+'/adminmatch/update',{... this.uitem, MatchDate:this.format_api_date(this.uitem.MatchDate)},this.config).then(response=>{
+          if(this.firstscr!=='' && this.secondscr!==''){
+            this.scr = this.firstscr+"-"+this.secondscr
+          }
+          else{
+            this.scr = ''
+          }
+          axios.post(this.$store.getters.getUrl+'/adminmatch/update',{... this.uitem,MatchScore:this.scr, MatchDate:this.format_api_date(this.uitem.MatchDate)},this.config).then(response=>{
             if(response.data.success){
               this.$toast.success('Uğurla dəyişdirildi!')
               this.refresh()

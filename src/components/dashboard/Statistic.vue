@@ -50,7 +50,7 @@
                 Nömrə
               </th>
               <th class="text-center">
-                Proqnoz
+                Hesab
               </th>
               <th class="text-center">
                 Nəticə
