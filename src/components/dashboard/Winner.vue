@@ -132,7 +132,7 @@
               <td>
               <v-checkbox
                 v-model="selected"
-                :value="{ Number:item.number, Date:format_api_date(item.date) }"
+                :value="{ Number:item.number, CorrectGuessNum:item.correctGuessNum, Date:format_api_date(item.date) }"
               ></v-checkbox>
               </td>
               <td>{{ item.number }}</td>
@@ -194,6 +194,7 @@ import moment from "moment"
         })
       },
       search(){
+        this.selected = []
         this.refresh()
       },
       smsupd(num){

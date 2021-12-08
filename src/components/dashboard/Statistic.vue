@@ -62,11 +62,11 @@
           </thead>
           <tbody>
             <tr
-              v-for="(item, index) in items"
+              v-for="item in items"
               :key="item.id"
               class="text-center"
             >
-              <td>{{ index+1 }}</td>
+              <td>{{ items.indexOf(item)%5+1 }}</td>
               <td>{{ item.game }}</td>
               <td>{{ item.number }}</td>
               <td>{{ item.prognoz }}</td>
