@@ -41,7 +41,7 @@ deploy_prod:
         - apt-get update -y && apt-get install -y -qq sshpass
     script:
         - sshpass -V
-        - sshpass -p $SERVER_PASS scp -o stricthostkeychecking=no -r dist/. root@$SERVER_IP:/var/www/top.vas.az
+        - sshpass -p $SERVER_PASS scp -o stricthostkeychecking=no -r dist/. root@$SERVER_IP:/var/www/cms.vas.az
     only:
         - master
     tags:
