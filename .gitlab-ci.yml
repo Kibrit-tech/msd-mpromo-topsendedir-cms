@@ -1,0 +1,62 @@
+image: j0kersm1le/gitlab-univeral-new
+
+stages:
+    - build
+    - deploy
+
+cache:
+    paths:
+        - dist/
+
+build_prod:
+    stage: build
+    before_script:
+        - npm -v
+    script:
+        - npm install
+        - npm run build
+    only:
+        - master
+    tags:
+        - universal-docker-runner
+
+# build_dev:
+#     stage: build
+#     before_script:
+#         - npm -v
+#         - npm install -g env-cmd
+#     script:
+#         - npm install
+#         - npm run build:dev
+#     only:
+#         - master
+#     tags:
+#         - universal-docker-runner
+
+deploy_prod:
+    stage: deploy
+    environment: production
+    before_script:
+        - echo -e "" > /etc/apt/sources.list.d/nodesource.list
+        - apt-get update -y && apt-get install -y -qq sshpass
+    script:
+        - sshpass -V
+        - sshpass -p $SERVER_PASS scp -o stricthostkeychecking=no -r dist/. root@$SERVER_IP:/var/www/top.vas.az
+    only:
+        - master
+    tags:
+        - universal-docker-runner
+
+# deploy_dev:
+#     stage: deploy
+#     environment: staging
+#     before_script:
+#         - apt-get update -y && apt-get install -y -qq sshpass
+#     script:
+#         - sshpass -V
+#         - sshpass -p $TEST_SERVER_PASS scp -o stricthostkeychecking=no -r build/. root@$IQLIME_TEST_IP:/var/www/iqlime
+#     only:
+#         - master
+#     when: manual
+#     tags:
+#         - universal-docker-runner

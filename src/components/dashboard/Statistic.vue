@@ -120,7 +120,7 @@ import moment from "moment"
       return d ? moment(d).format("YYYY-MM-DD HH:mm") : '';
       },
       format_date(k){
-            return k ? moment(k).format('DD.MM.Y HH:mm:ss') : '';
+            return k ? moment(k).format('DD.MM.Y HH:mm:ss:SSS') : '';
         },
       format_api_date(k){
           return k ? moment(k).format('Y-MM-DD HH:mm:ss') : '';
