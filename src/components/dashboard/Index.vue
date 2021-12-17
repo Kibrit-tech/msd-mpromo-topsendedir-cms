@@ -264,8 +264,7 @@
               <td>{{ item.secondTeam }}</td>
               <td>{{ format_date(item.matchDate) }}</td>
               <td>{{ item.result }}</td>
-              <td v-if="item.status==0">Normal</td>
-              <td v-else>Təxirə Salınıb</td>
+              <td>{{ item.status }}</td>
               <td>
                 <v-btn
                 class="ma-2"
